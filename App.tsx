@@ -29,6 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as url from "url";
 
 function HomeScreen({navigation}) {
@@ -36,6 +37,7 @@ function HomeScreen({navigation}) {
 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{fontSize:50, fontWeight:400}}>Welcome home!</Text>
+
             <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
                 <Text style={{textAlign: 'center', marginBottom: 10}}>Abou Us</Text>
                 <View style={{
@@ -152,16 +154,34 @@ function DetailsScreen({navigation}) {
         </View>
     );
 }
+function NotificationsScreen({ navigation }) {
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Button onPress={() => navigation.goBack()} title="Go back home" />
+        </View>
+    );
+}
+
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function StackNavigator() {
+    return (
+        <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
+            <Stack.Screen name="Profile" component={DetailsScreen} options={{ headerShown: false }}/>
+        </Stack.Navigator>
+    );
+}
 
 function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen name="Home" component={HomeScreen}/>
-                <Stack.Screen name="Profile" component={DetailsScreen}/>
-            </Stack.Navigator>
+            <Drawer.Navigator initialRouteName="Main">
+                <Drawer.Screen name="Main" component={StackNavigator} />
+                <Drawer.Screen name="Test" component={NotificationsScreen} />
+            </Drawer.Navigator>
         </NavigationContainer>
     );
 }
