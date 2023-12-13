@@ -8,12 +8,14 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+    Alert,
+    Button,
     Image,
     SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
-    Text, TextInput,
+    Text, TextInput, TouchableOpacity,
     useColorScheme,
     View,
 } from 'react-native';
@@ -25,193 +27,142 @@ import {
     LearnMoreLinks,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import * as url from "url";
 
-type SectionProps = PropsWithChildren<{
-    title: string;
-}>;
-
-
-function App(): JSX.Element {
-    const isDarkMode = useColorScheme() === 'dark';
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
-    const [text, onChangeText] = React.useState('');
-
+function HomeScreen({navigation}) {
     return (
-        <SafeAreaView style={backgroundStyle}>
-            <StatusBar
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                backgroundColor={backgroundStyle.backgroundColor}
-            />
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
-                {/*<Header />*/}
-                <View
-                    style={{
-                        backgroundColor: 'rgb(255,255,255)',
-                    }}>
 
-                    <View style={styles.header}>
-                        <Text style={styles.headerNavigation}>‹ Chat</Text>
-                        <Text style={styles.headerTitle}>Instamobile Team</Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{fontSize:50, fontWeight:400}}>Welcome home!</Text>
+            <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
+                <Text style={{textAlign: 'center', marginBottom: 10}}>Abou Us</Text>
+                <View style={{
+                    borderTopWidth: 1,
+                    borderColor: 'rgb(206,206,208)',
+                    height: 60,
+                    flexDirection: "row",
+                    justifyContent: 'space-around',
+                    backgroundColor: 'rgb(231,234,236)'
+                }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Home')}
+                        style={{
+                            padding: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex'
+                        }}
+                    >
                         <Image
-                            style={styles.settingLogo}
+                            style={styles.homeLogo}
                             source={{
-                                uri: 'https://img.icons8.com/ios-glyphs/30/000000/settings--v1.png',
+                                uri: 'https://img.icons8.com/wired/64/list--v1.png',
                             }}
                         />
-                    </View>
-                    <View style={styles.chat}>
-                        <View style={styles.messagesSection}>
-                            <Image
-                                style={styles.tinyLogo}
-                                source={{
-                                    uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                }}
-                            />
-                            <View style={styles.message}>
-                                <Text style={styles.messageText}>Let`s do this 👌</Text>
-                                <View style={styles.nosik}/>
-                            </View>
-                        </View>
-
-                        <View style={styles.messagesSection}>
-                            <Image
-                                style={styles.tinyLogo}
-                                source={{
-                                    uri: 'https://images.pexels.com/photos/6333654/pexels-photo-6333654.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                }}
-                            />
-                            <View style={styles.message}>
-                                <Text style={styles.messageText}>Great, just sent out the invite! 😎</Text>
-                                <View style={styles.nosik}/>
-                            </View>
-                        </View>
-
-                        <View style={{marginTop: 35, height: 10, width: 10}}></View>
-                        <View style={styles.myMessagesSection}>
-                            <View style={styles.myResendMessages}>
-                                <Text style={{fontSize:12}}>↳ You replied to Frank</Text>
-                                <Text>Hey guys, I`m going to schedule a video</Text>
-                                <Text> conference</Text>
-                            </View>
-                            <View style={styles.myMessage}>
-                                <Text style={styles.myMessageText}>That`s actually so cool</Text>
-                                <View style={styles.myNosik}/>
-                            </View>
-                            <Image
-                                style={styles.myTinyLogo}
-                                source={{
-                                    uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg',
-                                }}
-                            />
-                        </View>
-
-                        <View style={{marginTop: 35, height: 10, width: 10}}></View>
-                        <View style={styles.myMessagesSection}>
-                            <View style={styles.myResendMessages}>
-                                <Text style={{fontSize:12}}>↳ You replied to Frank</Text>
-                                <Text>Let`s do this 👌</Text>
-                            </View>
-                            <View style={styles.myMessage}>
-                                <Text style={styles.myMessageText}>So much excitement 🔥</Text>
-                                <View style={styles.myNosik}/>
-                            </View>
-                            <Image
-                                style={styles.myTinyLogo}
-                                source={{
-                                    uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg',
-                                }}
-                            />
-                        </View>
-
-                        <View style={styles.messagesSection}>
-                            <Image
-                                style={styles.tinyLogo}
-                                source={{
-                                    uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                }}
-                            />
-                            <View style={styles.message}>
-                                <Text style={styles.messageText}>Haha, exactly</Text>
-                                <View style={styles.nosik}/>
-                            </View>
-                        </View>
-
-                        <View style={{marginTop: 30, height: 10, width: 10}}></View>
-                        <View style={styles.messagesSection}>
-                            <Image
-                                style={styles.tinyLogo}
-                                source={{
-                                    uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                }}
-                            />
-                            <View style={styles.resendMessages}>
-                                <Text style={{fontSize:12}}>↳ Francis replied to Frank</Text>
-                                <Text>Great, just sent out the invite! 😎</Text>
-                            </View>
-
-                            <View style={styles.message}>
-                                <Text style={styles.messageText}>Yep, I got it 👌</Text>
-                                <View style={styles.nosik}/>
-                            </View>
-                        </View>
-
-
-                        <View style={{marginTop: 30, height: 10, width: 10}}></View>
-                        <View style={styles.messagesSection}>
-                            <Image
-                                style={styles.tinyLogo}
-                                source={{
-                                    uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                }}
-                            />
-                            <View style={styles.resendMessages}>
-                                <Text style={{fontSize:12}}>↳ Francis replied to Frank</Text>
-                                <Text>That`s sounds good to me 🔥</Text>
-                            </View>
-
-                            <View style={styles.message}>
-                                <Text style={styles.messageText}>Mee too 🥳</Text>
-                                <View style={styles.nosik}/>
-                            </View>
-                        </View>
-
-                    </View>
-
-                    <View style={styles.inputSection}>
-
+                        <Text style={{color: 'black', textAlign: 'center'}}>About Us</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Profile')}
+                        style={{
+                            padding: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex'
+                        }}
+                    >
                         <Image
-                            style={styles.cameraLogo}
+                            style={styles.userLogo}
                             source={{
-                                uri: 'https://img.icons8.com/ios-filled/50/camera--v3.png',
+                                uri: 'https://img.icons8.com/dotty/80/user.png',
                             }}
                         />
-                        <Image
-                            style={styles.micropfoneLogo}
-                            source={{
-                                uri: 'https://img.icons8.com/material-sharp/24/microphone--v1.png',
-                            }}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="         Start typing.."
-                            onChangeText={onChangeText}
-                            value={text}
-                        />
-                        <Image
-                            style={styles.sendLogo}
-                            source={{
-                                uri: 'https://img.icons8.com/android/24/000000/paper-plane.png',
-                            }}
-                        />
-                    </View>
+                        <Text style={{color: 'black', textAlign: 'center'}}>Profile</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            </View>
+
+        </View>
+
+
+    );
+}
+
+function DetailsScreen({navigation}) {
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+                style={{
+                    borderRadius: 50,
+                    width: 200,
+                    height: 200,
+                    marginTop:30
+                }}
+                source={{ uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg' }}
+            />
+            <Text style={{fontSize:50, fontWeight:400}}>Evgenia Deken</Text>
+            <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
+                <Text style={{textAlign: 'center', marginBottom: 10}}>Webc-2211</Text>
+                <View style={{
+                    borderTopWidth: 1,
+                    borderColor: 'rgb(206,206,208)',
+                    height: 60,
+                    flexDirection: "row",
+                    justifyContent: 'space-around',
+                    backgroundColor: 'rgb(231,234,236)'
+                }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Home')}
+                        style={{
+                            padding: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex'
+                        }}
+                    >
+                        <Image
+                            style={styles.homeLogo}
+                            source={{
+                                uri: 'https://img.icons8.com/wired/64/list--v1.png',
+                            }}
+                        />
+                        <Text style={{color: 'black', textAlign: 'center'}}>About Us</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Profile')}
+                        style={{
+                            padding: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex'
+                        }}
+                    >
+                        <Image
+                            style={styles.userLogo}
+                            source={{
+                                uri: 'https://img.icons8.com/dotty/80/user.png',
+                            }}
+                        />
+                        <Text style={{color: 'black', textAlign: 'center'}}>Profile</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+        </View>
+    );
+}
+
+const Stack = createNativeStackNavigator();
+
+function App() {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+                <Stack.Screen name="Home" component={HomeScreen}/>
+                <Stack.Screen name="Profile" component={DetailsScreen}/>
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 
@@ -251,7 +202,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '600',
     },
-    myResendMessages:{
+    myResendMessages: {
         backgroundColor: 'rgb(238,238,248)',
         height: "auto",
         textAlign: "center",
@@ -264,7 +215,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 400,
         position: "absolute",
-        right:55,
+        right: 55,
         top: -50,
     },
     resendMessages: {
@@ -394,6 +345,14 @@ const styles = StyleSheet.create({
         height: 25,
         position: "relative",
         right: 10,
+    },
+    homeLogo: {
+        width: 25,
+        height: 25,
+    },
+    userLogo: {
+        width: 30,
+        height: 30,
     },
     cameraLogo: {
         width: 25,
