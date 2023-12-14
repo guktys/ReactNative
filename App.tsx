@@ -5,8 +5,9 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
+import News from "./Components/News";
 import {
     Alert,
     Button,
@@ -31,8 +32,24 @@ import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as url from "url";
+import {setNews} from "./store/action/newsActions";
+import {Provider, useDispatch, useSelector} from "react-redux";
+import store, {persistor} from "./store";
+import {PersistGate} from "redux-persist/integration/react";
 
 function HomeScreen({navigation}) {
+    const dispatch = useDispatch();
+    const newsFromStore = useSelector(state => state.news.articles);
+    useEffect(() => {
+        if(newsFromStore == null){
+            fetch('https://newsapi.org/v2/everything?q=Apple&from=2023-12-13&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7')
+                .then(response => response.json())
+                .then(data => {
+                    dispatch(setNews(data.articles));
+                })
+                .catch(error => console.error('Get news error!!!!!!!', error));
+        }
+    }, [dispatch]);
     return (
 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -156,9 +173,7 @@ function DetailsScreen({navigation}) {
 }
 function NotificationsScreen({ navigation }) {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
-        </View>
+      <News/>
     );
 }
 
@@ -168,6 +183,7 @@ const Drawer = createDrawerNavigator();
 
 function StackNavigator() {
     return (
+
         <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
             <Stack.Screen name="Profile" component={DetailsScreen} options={{ headerShown: false }}/>
@@ -177,12 +193,17 @@ function StackNavigator() {
 
 function App() {
     return (
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Main">
-                <Drawer.Screen name="Main" component={StackNavigator} />
-                <Drawer.Screen name="Test" component={NotificationsScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
+
+            <PersistGate loading={null} persistor={persistor}>
+                <Provider store={store}>
+                    <NavigationContainer>
+                        <Drawer.Navigator initialRouteName="Main">
+                            <Drawer.Screen name="Main" component={StackNavigator} />
+                            <Drawer.Screen name="News" component={NotificationsScreen} />
+                        </Drawer.Navigator>
+                    </NavigationContainer>
+                </Provider>
+            </PersistGate>
     );
 }
 
