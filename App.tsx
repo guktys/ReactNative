@@ -40,31 +40,60 @@ import {persistor} from "./store";
 
 function HomeScreen({navigation}) {
     const savedString = useSelector(state => state.string.savedString);
+    const chooseData = useSelector(state => state.data.data);
     const dispatch = useDispatch();
     const newsFromStore = useSelector(state => state.news.articles);
     useEffect(() => {
 
-        fetch(`https://newsapi.org/v2/everything?q=${savedString}&from=2023-12-13&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`)
+        fetch(`https://newsapi.org/v2/everything?q=${savedString}&from=${chooseData}&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`)
             .then(response => response.json())
             .then(data => {
                 dispatch(setNews(data.articles));
             })
-            .catch(error => console.error('Get news error!!!!!!!', error));
+            .catch(error => console.error('Помилка отримання новин!', error));
     }, [dispatch]);
     return (
 
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontSize: 40, fontWeight: 400, textAlign: "center",}}>Вітаємо в нашому додатку!</Text>
-            <Text style={{fontSize: 20, fontWeight: 400, marginTop: 15}}>Ваша тема новин:{savedString}</Text>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f0f0'}}>
+            <Text style={{
+                fontSize: 35,
+                fontWeight: '600',
+                color: '#333',
+                textShadowColor: 'rgba(0,0,0,0.12)',
+                textShadowOffset: {width: -1, height: 1},
+                textShadowRadius: 10,
+                marginBottom: 20,
+                textAlign:'center',
+            }}>
+                Вітаємо в нашому додатку!
+            </Text>
+
+            <Text style={{
+                fontSize: 18,
+                fontWeight: '500',
+                color: '#555',
+                marginBottom: 10,
+            }}>
+                Ваша тема новин: {savedString}
+            </Text>
+
+            <Text style={{
+                fontSize: 18,
+                fontWeight: '500',
+                color: '#555',
+                marginBottom: 20,
+            }}>
+                Обрана дата: {chooseData}
+            </Text>
+
             <Image
                 style={{
                     width: 300,
                     height: 300,
-                    justifyContent: "center",
-                    alignContent: "center",
-
+                    marginBottom: 20,
                 }}
-                source={{uri: "https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif"}}></Image>
+                source={{uri: "https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif"}}
+            />
             <View style={{flex: 1, justifyContent: 'flex-end', width: 400}}>
                 <View style={{
                     borderTopWidth: 1,

@@ -1,7 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import {View, Button, Text, ScrollView, Image, StyleSheet, FlatList, Alert, TextInput} from 'react-native';
+import {
+    View,
+    Button,
+    Text,
+    ScrollView,
+    Image,
+    StyleSheet,
+    FlatList,
+    Alert,
+    TextInput,
+    Linking,
+    TouchableOpacity
+} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {setString} from "../store/action/stringActions";
+import {setData} from "../store/action/dataActions";
 
 
 function News({navigation}) {
@@ -12,7 +25,8 @@ function News({navigation}) {
     const [flag, setFlag] = useState(true);
     const dispatch = useDispatch();
     const savedString = useSelector(state => state.string.savedString);
-    const renderItem = ({ item, index }) => (
+    const chooseData = useSelector(state => state.data.data);
+    const renderItem = ({item, index}) => (
         <View key={index} style={styles.post}>
             {item.urlToImage && (
                 <Image
@@ -28,6 +42,16 @@ function News({navigation}) {
                         ? item.description.substring(0, 100) + '...'
                         : item.description || 'No description'}
                 </Text>
+                <TouchableOpacity
+                    style={{
+                        padding: 10,
+                        borderRadius: 10,
+                        backgroundColor: '#007bff',
+                    }}
+                    onPress={() => Linking.openURL(`${item.url}`)}
+                >
+                    <Text style={{color: 'white', textAlign: 'center',}}>До новини</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -39,7 +63,7 @@ function News({navigation}) {
             setFlag(false);
             //Alert.alert('Fetching news with query:', savedString);
         } else {
-            fetch(`https://newsapi.org/v2/everything?q=${savedString}&from=2023-12-13&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`, {
+            fetch(`https://newsapi.org/v2/everything?q=${savedString}&from=${chooseData}&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`, {
                 method: 'GET',
             })
                 .then(response => response.json())
@@ -48,19 +72,19 @@ function News({navigation}) {
                     setLoading(false);
                 })
                 .catch(error => {
-                    console.error('Get news error!!!!!!!', error);
+                    console.error('Помилка отримання новин!', error);
                     setLoading(false);
                 });
         }
 
-    }, [savedString]);
+    }, [savedString, chooseData]);
 
     if (loading) {
         return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Image
                 style={{
-                    width:100,
-                    height:100,
+                    width: 100,
+                    height: 100,
                 }}
                 source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>
             <Text>Loading...</Text>
@@ -75,7 +99,7 @@ function News({navigation}) {
                 justifyContent: "center",
                 alignItems: "center",
                 borderColor: 'rgb(224, 224, 224)',
-                borderBottomWidth:1,
+                borderBottomWidth: 1,
             }}>
                 <TextInput
                     style={{
@@ -88,11 +112,35 @@ function News({navigation}) {
                         borderColor: 'rgb(224, 224, 224)',
                         backgroundColor: 'rgb(255,255,255)',
                     }}
-                    placeholder="Введіть тут тему новин"
+                    placeholder="Введіть тему новин, чи дату формату 2023-12-13"
                     onChangeText={newText => setText(newText)}
                     defaultValue={text}
                 />
-                <Button title="Змінити тему" onPress={() => dispatch(setString(text))}/>
+                <View style={{display: 'flex', flexDirection: "row"}}>
+                    <TouchableOpacity
+                        style={{
+                            padding: 10,
+                            marginRight: 10,
+                            borderRadius: 10,
+                            backgroundColor: '#007bff', // или любой другой цвет
+                        }}
+                        onPress={() => dispatch(setString(text))}
+                    >
+                        <Text style={{color: 'white'}}>Змінити тему</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            padding: 10,
+                            borderRadius: 10,
+                            backgroundColor: '#007bff',
+                        }}
+                        onPress={() => dispatch(setData(text))}
+                    >
+                        <Text style={{color: 'white'}}>Змінити дату</Text>
+                    </TouchableOpacity>
+                </View>
+                <Text>Поточна тема: {savedString}</Text>
+                <Text>Поточна дата: {chooseData}</Text>
             </View>
             <FlatList
                 data={news}
