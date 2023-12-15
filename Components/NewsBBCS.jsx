@@ -1,3 +1,4 @@
+NewsBBCS
 import React, {useState, useEffect} from 'react';
 import {
     View,
@@ -17,7 +18,7 @@ import {setString} from "../store/action/stringActions";
 import {setData} from "../store/action/dataActions";
 
 
-function NewsAtUkraine ({navigation}) {
+function NewsBBCS ({navigation}) {
 
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -53,18 +54,18 @@ function NewsAtUkraine ({navigation}) {
     );
 
     useEffect(() => {
-            fetch(`https://newsapi.org/v2/top-headlines?apiKey=12661ef1e65c42f3b9aad032b9a3e8b7&country=ua`, {
-                method: 'GET',
+        fetch(`https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`, {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                setNews(data.articles);
+                setLoading(false);
             })
-                .then(response => response.json())
-                .then(data => {
-                    setNews(data.articles);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.error('Помилка отримання новин!', error);
-                    setLoading(false);
-                });
+            .catch(error => {
+                console.error('Помилка отримання новин!', error);
+                setLoading(false);
+            });
 
     }, );
 
@@ -121,4 +122,4 @@ const styles = StyleSheet.create({
         color: 'black',
     },
 })
-export default NewsAtUkraine;
+export default NewsBBCS;

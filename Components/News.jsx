@@ -35,12 +35,12 @@ function News({navigation}) {
                 />
             )}
             <View style={styles.textContainer}>
-                <Text style={styles.title}>{item.title || 'No title'}</Text>
-                <Text style={styles.date}>{item.publishedAt || 'No date'}</Text>
+                <Text style={styles.title}>{item.title || ''}</Text>
+                <Text style={styles.date}>{item.publishedAt || 'Без дати'}</Text>
                 <Text style={styles.description}>
                     {item.description && item.description.length > 100
                         ? item.description.substring(0, 100) + '...'
-                        : item.description || 'No description'}
+                        : item.description || ''}
                 </Text>
                 <TouchableOpacity
                     style={{

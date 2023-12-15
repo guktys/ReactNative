@@ -38,6 +38,7 @@ import store from "./store";
 import {PersistGate} from "redux-persist/integration/react";
 import {persistor} from "./store";
 import NewsAtUkraine from "./Components/NewsAtUkraine";
+import NewsBBCS from "./Components/NewsBBCS";
 
 function HomeScreen({navigation}) {
     const savedString = useSelector(state => state.string.savedString);
@@ -246,6 +247,11 @@ function NewsAtUkraineScreen({navigation}) {
         <NewsAtUkraine/>
     );
 }
+function NewsBBCScreen({navigation}) {
+    return (
+        <NewsBBCS/>
+    );
+}
 
 
 const Stack = createNativeStackNavigator();
@@ -280,7 +286,8 @@ function App() {
                 <Drawer.Navigator initialRouteName="Main">
                     <Drawer.Screen name="Main" component={StackNavigator}/>
                     <Drawer.Screen name="News" component={NotificationsScreen}/>
-                    <Drawer.Screen name="News at Ukraine" component={NewsAtUkraineScreen}/>
+                    <Drawer.Screen name="Top news at Ukraine" component={NewsAtUkraineScreen}/>
+                    <Drawer.Screen name="Top news in BBC" component={NewsBBCScreen}/>
                 </Drawer.Navigator>
             </NavigationContainer>
             </PersistGate>
