@@ -30,7 +30,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import * as url from "url";
 import {setNews} from "./store/action/newsActions";
 import {Provider, useDispatch, useSelector} from "react-redux";
@@ -53,10 +53,19 @@ function HomeScreen({navigation}) {
     }, [dispatch]);
     return (
 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{fontSize:40, fontWeight:400, textAlign: "center",}}>Вітаємо в нашему додатку!</Text>
-            <Text style={{fontSize:20, fontWeight:400, marginTop:15}}>Ваша тема новин:{savedString}</Text>
-            <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize: 40, fontWeight: 400, textAlign: "center",}}>Вітаємо в нашому додатку!</Text>
+            <Text style={{fontSize: 20, fontWeight: 400, marginTop: 15}}>Ваша тема новин:{savedString}</Text>
+            <Image
+                style={{
+                    width: 300,
+                    height: 300,
+                    justifyContent: "center",
+                    alignContent: "center",
+
+                }}
+                source={{uri: "https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif"}}></Image>
+            <View style={{flex: 1, justifyContent: 'flex-end', width: 400}}>
                 <View style={{
                     borderTopWidth: 1,
                     borderColor: 'rgb(206,206,208)',
@@ -110,18 +119,18 @@ function HomeScreen({navigation}) {
 
 function DetailsScreen({navigation}) {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Image
                 style={{
                     borderRadius: 50,
                     width: 200,
                     height: 200,
-                    marginTop:30
+                    marginTop: 30
                 }}
-                source={{ uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg' }}
+                source={{uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg'}}
             />
-            <Text style={{fontSize:50, fontWeight:400}}>Evgenia Deken</Text>
-            <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
+            <Text style={{fontSize: 50, fontWeight: 400}}>Evgenia Deken</Text>
+            <View style={{flex: 1, justifyContent: 'flex-end', width: 400}}>
                 <Text style={{textAlign: 'center', marginBottom: 10}}>Webc-2211</Text>
                 <View style={{
                     borderTopWidth: 1,
@@ -171,9 +180,10 @@ function DetailsScreen({navigation}) {
         </View>
     );
 }
-function NotificationsScreen({ navigation }) {
+
+function NotificationsScreen({navigation}) {
     return (
-      <News/>
+        <News/>
     );
 }
 
@@ -185,8 +195,8 @@ function StackNavigator() {
     return (
 
         <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
-            <Stack.Screen name="Profile" component={DetailsScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="Profile" component={DetailsScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
@@ -200,16 +210,17 @@ function App() {
             style={{
                 justifyContent: "center",
                 alignContent: "center",
-
+                    width:100,
+                    height:100,
             }}
             source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>} persistor={persistor}>
             */}
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Main">
-                <Drawer.Screen name="Main" component={StackNavigator} />
-                <Drawer.Screen name="News" component={NotificationsScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
+            <NavigationContainer>
+                <Drawer.Navigator initialRouteName="Main">
+                    <Drawer.Screen name="Main" component={StackNavigator}/>
+                    <Drawer.Screen name="News" component={NotificationsScreen}/>
+                </Drawer.Navigator>
+            </NavigationContainer>
 
         </Provider>
     );
