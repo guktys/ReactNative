@@ -204,24 +204,25 @@ function StackNavigator() {
 function App() {
     return (
         <Provider store={store}>
-            {/*
 
-            <PersistGate  loading={ <Image
-            style={{
-                justifyContent: "center",
-                alignContent: "center",
-                    width:100,
-                    height:100,
-            }}
-            source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>} persistor={persistor}>
-            */}
+
+            <PersistGate  loading={ <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                    style={{
+                        width:100,
+                        height:100,
+                    }}
+                    source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>
+                <Text>Loading...</Text>
+            </View>} persistor={persistor}>
+
             <NavigationContainer>
                 <Drawer.Navigator initialRouteName="Main">
                     <Drawer.Screen name="Main" component={StackNavigator}/>
                     <Drawer.Screen name="News" component={NotificationsScreen}/>
                 </Drawer.Navigator>
             </NavigationContainer>
-
+            </PersistGate>
         </Provider>
     );
 }

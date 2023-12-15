@@ -56,14 +56,15 @@ function News({navigation}) {
     }, [savedString]);
 
     if (loading) {
-        return <Image
-            style={{
-                justifyContent: "center",
-                alignContent: "center",
-                width:100,
-                height:100,
-            }}
-            source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>
+        return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+                style={{
+                    width:100,
+                    height:100,
+                }}
+                source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>
+            <Text>Loading...</Text>
+        </View>
     }
 
     return (
