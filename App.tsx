@@ -11,7 +11,7 @@ import News from "./Components/News";
 import {
     Alert,
     Button,
-    Image,
+    Image, Linking,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -37,6 +37,7 @@ import {Provider, useDispatch, useSelector} from "react-redux";
 import store from "./store";
 import {PersistGate} from "redux-persist/integration/react";
 import {persistor} from "./store";
+import NewsAtUkraine from "./Components/NewsAtUkraine";
 
 function HomeScreen({navigation}) {
     const savedString = useSelector(state => state.string.savedString);
@@ -158,7 +159,32 @@ function DetailsScreen({navigation}) {
                 }}
                 source={{uri: 'https://i.pinimg.com/550x/b1/d2/da/b1d2da1502b5c55d9459d6ee60c5367f.jpg'}}
             />
-            <Text style={{fontSize: 50, fontWeight: 400}}>Evgenia Deken</Text>
+            <Text style={{ fontSize: 35,
+                fontWeight: '600',
+                color: '#333',
+                textShadowColor: 'rgba(0,0,0,0.12)',
+                textShadowOffset: {width: -1, height: 1},
+                textShadowRadius: 10,
+                marginBottom: 20,
+                textAlign:'center',}}>Evgenia Deken</Text>
+            <TouchableOpacity
+                style={{
+                    padding: 10,
+                    borderRadius: 10,
+                    backgroundColor: 'rgba(255,255,255,0)',
+                    borderColor:'#262626',
+                    borderWidth:2,
+                    flexDirection:"row",
+                    display:"flex",
+                }}
+                onPress={() => Linking.openURL(`https://github.com/guktys/ReactNative`)}
+            >
+                <Image  style={{
+                 width:24,
+                    height:24,
+                }} source={{uri:"https://img.icons8.com/material-rounded/24/github.png"}}></Image>
+                <Text style={{color: '#262626', textAlign: 'center',}}>Go to my GitHub</Text>
+            </TouchableOpacity>
             <View style={{flex: 1, justifyContent: 'flex-end', width: 400}}>
                 <Text style={{textAlign: 'center', marginBottom: 10}}>Webc-2211</Text>
                 <View style={{
@@ -215,6 +241,11 @@ function NotificationsScreen({navigation}) {
         <News/>
     );
 }
+function NewsAtUkraineScreen({navigation}) {
+    return (
+        <NewsAtUkraine/>
+    );
+}
 
 
 const Stack = createNativeStackNavigator();
@@ -249,6 +280,7 @@ function App() {
                 <Drawer.Navigator initialRouteName="Main">
                     <Drawer.Screen name="Main" component={StackNavigator}/>
                     <Drawer.Screen name="News" component={NotificationsScreen}/>
+                    <Drawer.Screen name="News at Ukraine" component={NewsAtUkraineScreen}/>
                 </Drawer.Navigator>
             </NavigationContainer>
             </PersistGate>
