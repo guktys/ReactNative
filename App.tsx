@@ -34,29 +34,29 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as url from "url";
 import {setNews} from "./store/action/newsActions";
 import {Provider, useDispatch, useSelector} from "react-redux";
-import store, {persistor} from "./store";
+import store from "./store";
 import {PersistGate} from "redux-persist/integration/react";
+import {persistor} from "./store";
 
 function HomeScreen({navigation}) {
+    const savedString = useSelector(state => state.string.savedString);
     const dispatch = useDispatch();
     const newsFromStore = useSelector(state => state.news.articles);
     useEffect(() => {
-        if(newsFromStore == null){
-            fetch('https://newsapi.org/v2/everything?q=Apple&from=2023-12-13&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7')
-                .then(response => response.json())
-                .then(data => {
-                    dispatch(setNews(data.articles));
-                })
-                .catch(error => console.error('Get news error!!!!!!!', error));
-        }
+
+        fetch(`https://newsapi.org/v2/everything?q=${savedString}&from=2023-12-13&sortBy=popularity&apiKey=12661ef1e65c42f3b9aad032b9a3e8b7`)
+            .then(response => response.json())
+            .then(data => {
+                dispatch(setNews(data.articles));
+            })
+            .catch(error => console.error('Get news error!!!!!!!', error));
     }, [dispatch]);
     return (
 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{fontSize:50, fontWeight:400}}>Welcome home!</Text>
-
+            <Text style={{fontSize:40, fontWeight:400, textAlign: "center",}}>Вітаємо в нашему додатку!</Text>
+            <Text style={{fontSize:20, fontWeight:400, marginTop:15}}>Ваша тема новин:{savedString}</Text>
             <View style={{flex: 1, justifyContent: 'flex-end',width:400}}>
-                <Text style={{textAlign: 'center', marginBottom: 10}}>Abou Us</Text>
                 <View style={{
                     borderTopWidth: 1,
                     borderColor: 'rgb(206,206,208)',
@@ -193,17 +193,25 @@ function StackNavigator() {
 
 function App() {
     return (
+        <Provider store={store}>
+            {/*
 
-            <PersistGate loading={null} persistor={persistor}>
-                <Provider store={store}>
-                    <NavigationContainer>
-                        <Drawer.Navigator initialRouteName="Main">
-                            <Drawer.Screen name="Main" component={StackNavigator} />
-                            <Drawer.Screen name="News" component={NotificationsScreen} />
-                        </Drawer.Navigator>
-                    </NavigationContainer>
-                </Provider>
-            </PersistGate>
+            <PersistGate  loading={ <Image
+            style={{
+                justifyContent: "center",
+                alignContent: "center",
+
+            }}
+            source={{uri: "https://media.tenor.com/TdlYsAE1tvwAAAAi/kumorun-kumoxworld.gif"}}></Image>} persistor={persistor}>
+            */}
+        <NavigationContainer>
+            <Drawer.Navigator initialRouteName="Main">
+                <Drawer.Screen name="Main" component={StackNavigator} />
+                <Drawer.Screen name="News" component={NotificationsScreen} />
+            </Drawer.Navigator>
+        </NavigationContainer>
+
+        </Provider>
     );
 }
 
